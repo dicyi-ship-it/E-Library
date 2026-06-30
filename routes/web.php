@@ -13,7 +13,9 @@ use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'landing'])->name('landing');
+Route::get('/katalog/buku', [HomeController::class, 'bookCatalog'])->name('catalog.books.index');
 Route::get('/katalog/buku/{book}', [HomeController::class, 'bookDetail'])->name('catalog.books.show');
+Route::get('/katalog/ebook', [HomeController::class, 'ebookCatalog'])->name('catalog.ebooks.index');
 Route::get('/katalog/ebook/{ebook}', [HomeController::class, 'ebookDetail'])->name('catalog.ebooks.show');
 Route::get('/absensi-perpustakaan', [HomeController::class, 'attendanceKiosk'])->name('attendance.kiosk');
 Route::post('/absensi-perpustakaan', [AttendanceController::class, 'publicStore'])->name('attendance.kiosk.store');

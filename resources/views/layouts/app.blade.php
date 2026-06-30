@@ -16,7 +16,8 @@
                 </a>
 
                 <nav class="flex flex-wrap items-center gap-2 text-sm">
-                    <a class="nav-link" href="{{ route('landing') }}#koleksi">Katalog</a>
+                    <a class="nav-link" href="{{ route('catalog.books.index') }}">Katalog Buku</a>
+                    <a class="nav-link" href="{{ route('catalog.ebooks.index') }}">Katalog Ebook</a>
                     <a class="nav-link" href="{{ route('attendance.kiosk') }}">Daftar Hadir</a>
                     @auth
                         @if(auth()->user()->isAdmin())

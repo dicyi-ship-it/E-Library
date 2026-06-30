@@ -12,47 +12,60 @@ class HomeController extends Controller
 {
     public function landing()
     {
-        $search = trim((string) request('q', ''));
-        $format = request('format', 'all');
-        $category = request('category');
-
-        $bookQuery = Book::query()
-            ->when($search, fn ($query) => $query->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('author', 'like', "%{$search}%")
-                    ->orWhere('isbn', 'like', "%{$search}%")
-                    ->orWhere('ddc', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%");
-            }))
-            ->when($category, fn ($query) => $query->where('category', $category));
-
-        $ebookQuery = Ebook::query()
-            ->where('is_active', true)
-            ->when($search, fn ($query) => $query->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('author', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%");
-            }))
-            ->when($category, fn ($query) => $query->where('category', $category));
-
         return view('welcome', [
             'bookCount' => Book::count(),
             'ebookCount' => Ebook::where('is_active', true)->count(),
             'memberCount' => User::where('role', 'member')->count(),
             'visitCount' => Visit::whereDate('check_in_at', today())->count(),
             'loanCount' => Loan::where('status', 'borrowed')->count(),
-            'books' => in_array($format, ['all', 'book'], true) ? $bookQuery->latest()->take(8)->get() : collect(),
-            'ebooks' => in_array($format, ['all', 'ebook'], true) ? $ebookQuery->latest()->take(8)->get() : collect(),
-            'categories' => Book::query()
-                ->whereNotNull('category')
-                ->distinct()
-                ->pluck('category')
-                ->merge(Ebook::query()->where('is_active', true)->whereNotNull('category')->distinct()->pluck('category'))
-                ->filter()
-                ->unique()
-                ->sort()
-                ->values(),
-            'selectedFormat' => $format,
+            'books' => Book::latest()->take(6)->get(),
+            'ebooks' => Ebook::where('is_active', true)->latest()->take(6)->get(),
+        ]);
+    }
+
+    public function bookCatalog()
+    {
+        $search = trim((string) request('q', ''));
+        $category = request('category');
+
+        return view('catalog.books', [
+            'books' => Book::query()
+                ->when($search, fn ($query) => $query->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('author', 'like', "%{$search}%")
+                        ->orWhere('publisher', 'like', "%{$search}%")
+                        ->orWhere('isbn', 'like', "%{$search}%")
+                        ->orWhere('ddc', 'like', "%{$search}%")
+                        ->orWhere('category', 'like', "%{$search}%");
+                }))
+                ->when($category, fn ($query) => $query->where('category', $category))
+                ->latest()
+                ->paginate(12)
+                ->withQueryString(),
+            'categories' => Book::query()->whereNotNull('category')->distinct()->orderBy('category')->pluck('category'),
+            'selectedCategory' => $category,
+            'search' => $search,
+        ]);
+    }
+
+    public function ebookCatalog()
+    {
+        $search = trim((string) request('q', ''));
+        $category = request('category');
+
+        return view('catalog.ebooks', [
+            'ebooks' => Ebook::query()
+                ->where('is_active', true)
+                ->when($search, fn ($query) => $query->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('author', 'like', "%{$search}%")
+                        ->orWhere('category', 'like', "%{$search}%");
+                }))
+                ->when($category, fn ($query) => $query->where('category', $category))
+                ->latest()
+                ->paginate(12)
+                ->withQueryString(),
+            'categories' => Ebook::query()->where('is_active', true)->whereNotNull('category')->distinct()->orderBy('category')->pluck('category'),
             'selectedCategory' => $category,
             'search' => $search,
         ]);

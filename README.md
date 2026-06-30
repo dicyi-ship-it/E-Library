@@ -237,8 +237,10 @@ app/Models
 
 | Halaman | Fungsi |
 | --- | --- |
-| `/` | Landing page dan katalog publik |
+| `/` | Landing page publik |
+| `/katalog/buku` | Katalog buku fisik |
 | `/katalog/buku/{id}` | Informasi detail buku |
+| `/katalog/ebook` | Katalog ebook |
 | `/katalog/ebook/{id}` | Informasi detail ebook |
 | `/absensi-perpustakaan` | Kiosk daftar hadir |
 | `/admin/dashboard` | Dashboard admin |
