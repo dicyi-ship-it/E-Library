@@ -6,7 +6,7 @@
     <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
             <h1 class="page-title">Katalog Buku</h1>
-            <p class="page-subtitle">Telusuri koleksi buku fisik, lokasi rak, DDC, dan ketersediaan stok.</p>
+            <p class="page-subtitle">Telusuri koleksi buku fisik. Informasi rak, DDC, dan stok tersedia di halaman detail buku.</p>
         </div>
         <a class="btn-secondary" href="{{ route('catalog.ebooks.index') }}">Lihat Katalog Ebook</a>
     </div>
@@ -29,7 +29,7 @@
                     @if($book->cover_path)
                         <img class="h-40 w-full rounded-md object-cover sm:h-36" src="{{ asset('storage/'.$book->cover_path) }}" alt="Cover {{ $book->title }}">
                     @else
-                        <div class="grid h-40 place-items-center rounded-md bg-slate-900 px-3 text-center text-sm font-bold text-white sm:h-36">DDC {{ $book->ddc }}</div>
+                        <div class="grid h-40 place-items-center rounded-md bg-slate-900 px-3 text-center text-sm font-bold text-white sm:h-36">BUKU</div>
                     @endif
                     <div class="min-w-0">
                         <div class="flex flex-wrap gap-2">
@@ -39,11 +39,6 @@
                         <h2 class="mt-3 line-clamp-2 text-xl font-bold text-slate-950">{{ $book->title }}</h2>
                         <p class="mt-1 text-sm text-slate-500">{{ $book->author }} &middot; {{ $book->publisher ?: 'Penerbit tidak tersedia' }} &middot; {{ $book->publication_year ?: '-' }}</p>
                         <p class="mt-3 line-clamp-2 text-sm leading-6 text-slate-600">{{ $book->description ?: 'Informasi deskripsi belum tersedia.' }}</p>
-                        <div class="mt-4 grid gap-2 text-sm text-slate-600 sm:grid-cols-3">
-                            <span>Rak: <strong class="text-slate-900">{{ $book->rack ?: '-' }}</strong></span>
-                            <span>DDC: <strong class="text-slate-900">{{ $book->ddc }}</strong></span>
-                            <span>Stok: <strong class="text-slate-900">{{ $book->stock_available }}/{{ $book->stock_total }}</strong></span>
-                        </div>
                     </div>
                 </a>
             </article>

@@ -22,6 +22,7 @@ Route::post('/absensi-perpustakaan', [AttendanceController::class, 'publicStore'
 Route::post('/absensi-perpustakaan/register', [AttendanceController::class, 'kioskRegister'])->name('attendance.kiosk.register');
 Route::get('/daftar-hadir', [HomeController::class, 'attendance'])->name('attendance.public');
 Route::post('/daftar-hadir', [AttendanceController::class, 'publicStore'])->name('attendance.public.store');
+Route::get('/login', [AuthController::class, 'access'])->name('auth.access');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');

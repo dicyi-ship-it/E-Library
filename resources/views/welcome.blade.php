@@ -55,7 +55,7 @@
             <div>
                 <p class="text-sm font-semibold text-sky-700">Katalog Buku</p>
                 <h2 class="page-title">Buku Fisik Terbaru</h2>
-                <p class="page-subtitle">Koleksi buku fisik dipisahkan dari ebook agar lokasi rak, DDC, dan stok lebih mudah dibaca.</p>
+                <p class="page-subtitle">Koleksi buku fisik ditampilkan ringkas. Informasi rak, DDC, dan stok tersedia di halaman detail buku.</p>
             </div>
             <a class="btn-secondary" href="{{ route('catalog.books.index') }}">Lihat Semua Buku</a>
         </div>
@@ -68,18 +68,14 @@
                             @if($book->cover_path)
                                 <img class="h-full w-full object-cover" src="{{ asset('storage/'.$book->cover_path) }}" alt="Cover {{ $book->title }}">
                             @else
-                                <div class="grid h-full w-full place-items-center bg-slate-900 px-2 text-center text-xs font-bold text-white">DDC {{ $book->ddc }}</div>
+                                <div class="grid h-full w-full place-items-center bg-slate-900 px-2 text-center text-xs font-bold text-white">BUKU</div>
                             @endif
                         </div>
                         <div class="min-w-0 py-1">
                             <span class="badge">Buku Fisik</span>
                             <h3 class="mt-3 line-clamp-2 text-lg font-bold text-slate-950">{{ $book->title }}</h3>
                             <p class="mt-2 line-clamp-1 text-sm text-slate-500">{{ $book->author }}</p>
-                            <div class="mt-4 grid gap-1 text-sm text-slate-600">
-                                <span>Rak <strong class="text-slate-900">{{ $book->rack ?: '-' }}</strong></span>
-                                <span>DDC <strong class="text-slate-900">{{ $book->ddc }}</strong></span>
-                                <span>Stok <strong class="text-slate-900">{{ $book->stock_available }}/{{ $book->stock_total }}</strong></span>
-                            </div>
+                            <p class="mt-3 line-clamp-1 text-sm text-slate-600">{{ $book->publisher ?: 'Penerbit tidak tersedia' }}</p>
                         </div>
                     </div>
                 </a>
@@ -94,7 +90,7 @@
             <div>
                 <p class="text-sm font-semibold text-sky-700">Katalog Ebook</p>
                 <h2 class="page-title">Ebook Digital Terbaru</h2>
-                <p class="page-subtitle">Koleksi digital ditampilkan dalam section terpisah agar akses file PDF dan metadata ebook lebih jelas.</p>
+                <p class="page-subtitle">Koleksi digital ditampilkan ringkas berdasarkan judul dan sumber.</p>
             </div>
             <a class="btn-secondary" href="{{ route('catalog.ebooks.index') }}">Lihat Semua Ebook</a>
         </div>
@@ -111,14 +107,8 @@
                             @endif
                         </div>
                         <div class="min-w-0 py-1">
-                            <span class="badge">Ebook PDF</span>
-                            <h3 class="mt-3 line-clamp-2 text-lg font-bold text-slate-950">{{ $ebook->title }}</h3>
-                            <p class="mt-2 line-clamp-1 text-sm text-slate-500">{{ $ebook->author ?: $appSettings['library_name'].' '.$appSettings['institution_name'] }}</p>
-                            <div class="mt-4 grid gap-1 text-sm text-slate-600">
-                                <span>Kategori <strong class="text-slate-900">{{ $ebook->category ?: 'Digital' }}</strong></span>
-                                <span>Diunduh <strong class="text-slate-900">{{ $ebook->download_count }} kali</strong></span>
-                                <span>Status <strong class="text-slate-900">Aktif</strong></span>
-                            </div>
+                            <h3 class="line-clamp-3 text-lg font-bold text-slate-950">{{ $ebook->title }}</h3>
+                            <p class="mt-3 line-clamp-2 text-sm text-slate-600">Sumber: {{ $ebook->author ?: $appSettings['library_name'].' '.$appSettings['institution_name'] }}</p>
                         </div>
                     </div>
                 </a>
@@ -128,7 +118,7 @@
         </div>
     </section>
 
-    <section id="akses" class="grid gap-6 py-10 lg:grid-cols-[.9fr_1.1fr]">
+    <section class="py-10">
         <div class="rounded-lg bg-slate-950 p-6 text-white">
             <p class="text-sm font-semibold text-sky-200">Layanan Cepat</p>
             <h2 class="mt-3 text-3xl font-bold">Absensi dan katalog dibuat untuk rutinitas perpustakaan.</h2>
@@ -145,50 +135,13 @@
                     <span class="text-sm text-sky-100">Katalog ebook</span>
                     <strong class="mt-1 block text-lg">Akses koleksi digital aktif</strong>
                 </a>
+                @guest
+                    <a class="rounded-md border border-white/15 bg-white/10 p-4 transition hover:bg-white/15" href="{{ route('auth.access') }}">
+                        <span class="text-sm text-sky-100">Akun anggota</span>
+                        <strong class="mt-1 block text-lg">Masuk atau registrasi</strong>
+                    </a>
+                @endguest
             </div>
         </div>
-
-        @guest
-            <div class="grid gap-4">
-                <form method="POST" action="{{ route('login') }}" class="panel grid gap-4">
-                    @csrf
-                    <h2 class="section-title">Masuk Anggota</h2>
-                    <input class="input" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
-                    <input class="input" type="password" name="password" placeholder="Password" required>
-                    <button class="btn-primary" type="submit">Masuk</button>
-                </form>
-
-                <form method="POST" action="{{ route('register') }}" class="panel grid gap-3">
-                    @csrf
-                    <h2 class="section-title">Registrasi Member</h2>
-                    <div class="grid gap-3 sm:grid-cols-2">
-                        <input class="input" name="name" placeholder="Nama lengkap" value="{{ old('name') }}" required>
-                        <input class="input" type="email" name="email" placeholder="Email kampus" value="{{ old('email') }}" required>
-                        <input class="input" name="identity_number" placeholder="NIM/NIS/NIDN/NUPTK" value="{{ old('identity_number') }}" required>
-                        <input class="input" name="phone" placeholder="No. telepon" value="{{ old('phone') }}">
-                        <input class="input" name="faculty" placeholder="Fakultas/Unit" value="{{ old('faculty') }}" required>
-                        <input class="input" name="study_program" placeholder="Program studi/unit" value="{{ old('study_program') }}" required>
-                        <select class="input" name="level" required>
-                            <option value="">Jenis anggota</option>
-                            @foreach(['Mahasiswa', 'Dosen', 'Tenaga Kependidikan', 'Siswa', 'Guru', 'Peneliti'] as $level)
-                                <option @selected(old('level') === $level)>{{ $level }}</option>
-                            @endforeach
-                        </select>
-                        <input class="input" type="password" name="password" placeholder="Password min. 8 karakter" required>
-                        <input class="input sm:col-span-2" type="password" name="password_confirmation" placeholder="Konfirmasi password" required>
-                    </div>
-                    <button class="btn-primary w-fit" type="submit">Daftar dan Akses Ebook</button>
-                </form>
-            </div>
-        @else
-            <div class="panel grid content-center gap-4">
-                <h2 class="section-title">Halo, {{ auth()->user()->name }}</h2>
-                <p class="text-sm leading-6 text-slate-600">Akun Anda aktif. Lanjutkan ke dashboard atau buka koleksi ebook anggota.</p>
-                <div class="flex flex-wrap gap-3">
-                    <a class="btn-primary" href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('ebooks.reader') }}">Buka Aplikasi</a>
-                    <a class="btn-secondary" href="{{ route('ebooks.reader') }}">Koleksi Ebook</a>
-                </div>
-            </div>
-        @endguest
     </section>
 @endsection

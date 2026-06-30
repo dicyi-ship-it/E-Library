@@ -6,7 +6,7 @@
     <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
             <h1 class="page-title">Katalog Ebook</h1>
-            <p class="page-subtitle">Telusuri ebook aktif dan akses file PDF atau tautan digital yang tersedia.</p>
+            <p class="page-subtitle">Telusuri ebook aktif berdasarkan judul dan sumber koleksi.</p>
         </div>
         <a class="btn-secondary" href="{{ route('catalog.books.index') }}">Lihat Katalog Buku</a>
     </div>
@@ -32,17 +32,8 @@
                         <div class="grid h-40 place-items-center rounded-md bg-sky-700 px-3 text-center text-sm font-bold text-white sm:h-36">PDF</div>
                     @endif
                     <div class="min-w-0">
-                        <div class="flex flex-wrap gap-2">
-                            <span class="badge">Ebook PDF</span>
-                            <span class="badge badge-soft">{{ $ebook->category ?: 'Digital' }}</span>
-                        </div>
-                        <h2 class="mt-3 line-clamp-2 text-xl font-bold text-slate-950">{{ $ebook->title }}</h2>
-                        <p class="mt-1 text-sm text-slate-500">{{ $ebook->author ?: $appSettings['library_name'].' '.$appSettings['institution_name'] }}</p>
-                        <p class="mt-3 line-clamp-2 text-sm leading-6 text-slate-600">{{ $ebook->description ?: 'Ebook aktif dan siap diakses oleh anggota.' }}</p>
-                        <div class="mt-4 grid gap-2 text-sm text-slate-600 sm:grid-cols-2">
-                            <span>Format: <strong class="text-slate-900">PDF / Digital</strong></span>
-                            <span>Diunduh: <strong class="text-slate-900">{{ $ebook->download_count }} kali</strong></span>
-                        </div>
+                        <h2 class="line-clamp-3 text-xl font-bold text-slate-950">{{ $ebook->title }}</h2>
+                        <p class="mt-3 line-clamp-2 text-sm text-slate-600">Sumber: {{ $ebook->author ?: $appSettings['library_name'].' '.$appSettings['institution_name'] }}</p>
                     </div>
                 </a>
             </article>

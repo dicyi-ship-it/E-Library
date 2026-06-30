@@ -9,6 +9,11 @@ use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
+    public function access()
+    {
+        return view('auth.access');
+    }
+
     public function login(Request $request)
     {
         $credentials = $request->validate([

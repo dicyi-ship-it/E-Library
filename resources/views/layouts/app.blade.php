@@ -38,7 +38,7 @@
                             <button class="btn-secondary" type="submit">Keluar</button>
                         </form>
                     @else
-                        <a class="btn-secondary" href="{{ route('landing') }}#akses">Masuk</a>
+                        <a class="btn-secondary" href="{{ route('auth.access') }}">Masuk</a>
                     @endauth
                 </nav>
             </div>
