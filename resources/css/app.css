@@ -1,0 +1,145 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer components {
+    .page-title {
+        @apply text-3xl font-bold tracking-normal text-slate-950;
+    }
+
+    .page-subtitle {
+        @apply mt-2 text-sm text-slate-600;
+    }
+
+    .section-title {
+        @apply text-lg font-semibold text-slate-950;
+    }
+
+    .panel {
+        @apply rounded-lg border border-sky-100 bg-white p-5 shadow-sm shadow-sky-50;
+    }
+
+    .metric {
+        @apply rounded-lg border border-sky-100 bg-white p-4 shadow-sm shadow-sky-50;
+    }
+
+    .metric span {
+        @apply block text-2xl font-bold text-slate-950;
+    }
+
+    .metric small {
+        @apply mt-1 block text-sm text-slate-500;
+    }
+
+    .input {
+        @apply w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-sky-600 focus:ring-2 focus:ring-sky-100;
+    }
+
+    .btn-primary {
+        @apply inline-flex min-h-10 items-center justify-center rounded-md bg-sky-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-800;
+    }
+
+    .btn-secondary {
+        @apply inline-flex min-h-10 items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:border-sky-300 hover:bg-sky-50 hover:text-sky-800;
+    }
+
+    .btn-light {
+        @apply inline-flex min-h-10 items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-sky-50;
+    }
+
+    .btn-dark {
+        @apply inline-flex min-h-10 items-center justify-center rounded-md border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/15;
+    }
+
+    .btn-mini {
+        @apply inline-flex min-h-8 items-center justify-center rounded-md border border-sky-200 bg-sky-50 px-3 py-1 text-sm font-medium text-sky-800 transition hover:bg-sky-100;
+    }
+
+    .btn-mini-danger {
+        @apply inline-flex min-h-8 items-center justify-center rounded-md border border-red-200 bg-red-50 px-3 py-1 text-sm font-medium text-red-800 transition hover:bg-red-100;
+    }
+
+    .nav-link {
+        @apply rounded-md px-3 py-2 font-medium text-slate-700 transition hover:bg-sky-50 hover:text-sky-800;
+    }
+
+    .badge {
+        @apply inline-flex rounded-md bg-sky-100 px-2 py-1 text-xs font-medium text-sky-800;
+    }
+
+    .badge-soft {
+        @apply bg-slate-100 text-slate-700;
+    }
+
+    .filter-chip {
+        @apply inline-flex shrink-0 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-600 transition hover:border-sky-300 hover:bg-sky-50 hover:text-sky-800;
+    }
+
+    .filter-chip-active {
+        @apply border-sky-600 bg-sky-600 text-white hover:bg-sky-700 hover:text-white;
+    }
+
+    .collection-card {
+        @apply rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition hover:border-sky-300 hover:shadow-md;
+    }
+
+    .info-box {
+        @apply rounded-lg border border-slate-200 bg-white p-4;
+    }
+
+    .info-box small {
+        @apply block text-xs font-semibold uppercase tracking-normal text-slate-500;
+    }
+
+    .info-box strong {
+        @apply mt-1 block break-words text-base font-bold text-slate-950;
+    }
+
+    .kiosk-tab {
+        @apply min-h-12 rounded-md px-4 py-2 text-sm font-bold text-slate-600 transition hover:bg-white hover:text-sky-800;
+    }
+
+    .kiosk-tab-active {
+        @apply bg-white text-sky-800 shadow-sm;
+    }
+
+    .searchable-select {
+        @apply relative;
+    }
+
+    .searchable-options {
+        @apply absolute left-0 right-0 top-[calc(100%-1.25rem)] z-30 max-h-72 overflow-y-auto rounded-md border border-slate-200 bg-white py-1 shadow-lg shadow-slate-200;
+    }
+
+    .searchable-option {
+        @apply block w-full px-4 py-3 text-left transition hover:bg-sky-50;
+    }
+
+    .searchable-option + .searchable-option {
+        @apply border-t border-slate-100;
+    }
+
+    .searchable-option-active {
+        @apply bg-sky-50;
+    }
+
+    .table {
+        @apply w-full border-collapse text-left text-sm;
+    }
+
+    .table th {
+        @apply border-b border-zinc-200 bg-zinc-50 px-4 py-3 font-semibold text-zinc-700;
+    }
+
+    .table td {
+        @apply border-b border-zinc-100 px-4 py-3 align-top text-zinc-700;
+    }
+}
