@@ -28,6 +28,10 @@
                 <h2 class="section-title">Masuk Anggota</h2>
                 <input class="input min-h-12" type="email" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
                 <input class="input min-h-12" type="password" name="password" placeholder="Password" required>
+                <label>
+                    <span class="mb-1 block text-sm font-semibold text-slate-700">Captcha: {{ $loginCaptcha['question'] }} = ?</span>
+                    <input class="input min-h-12" type="number" name="login_captcha_answer" placeholder="Jawaban penjumlahan" required>
+                </label>
                 <button class="btn-primary min-h-12" type="submit">Masuk</button>
             </form>
 
@@ -49,8 +53,12 @@
                     </select>
                     <input class="input" type="password" name="password" placeholder="Password min. 8 karakter" required>
                     <input class="input sm:col-span-2" type="password" name="password_confirmation" placeholder="Konfirmasi password" required>
+                    <label class="sm:col-span-2">
+                        <span class="mb-1 block text-sm font-semibold text-slate-700">Captcha: {{ $registerCaptcha['question'] }} = ?</span>
+                        <input class="input" type="number" name="register_captcha_answer" placeholder="Jawaban penjumlahan" required>
+                    </label>
                 </div>
-                <button class="btn-primary w-fit" type="submit">Daftar dan Akses Ebook</button>
+                <button class="btn-primary w-fit" type="submit">Daftar dan Lihat Kartu</button>
             </form>
         </div>
     </section>

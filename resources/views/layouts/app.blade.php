@@ -31,6 +31,7 @@
                             <a class="nav-link" href="{{ route('circulation.index') }}">Sirkulasi</a>
                             <a class="nav-link" href="{{ route('settings.edit') }}">Pengaturan</a>
                         @else
+                            <a class="nav-link" href="{{ route('member.card') }}">Kartu Anggota</a>
                             <a class="nav-link" href="{{ route('ebooks.reader') }}">Ebook Saya</a>
                         @endif
                         <form method="POST" action="{{ route('logout') }}">

@@ -22,7 +22,8 @@
                     <div class="mt-10">
                         <p class="text-sm font-semibold uppercase tracking-normal text-sky-200">{{ now()->format('d M Y') }}</p>
                         <p class="mt-2 text-6xl font-bold leading-none" data-kiosk-clock>{{ now()->format('H:i') }}</p>
-                        <p class="mt-4 max-w-md text-lg leading-8 text-slate-300">Check-in pengunjung dan registrasi anggota baru dalam satu layar.</p>
+                        <p class="mt-2 text-sm font-semibold text-sky-200">WIB / Jakarta</p>
+                        <p class="mt-4 max-w-md text-lg leading-8 text-slate-300">Input nomor induk untuk mencatat kehadiran pengunjung perpustakaan.</p>
                     </div>
                 </div>
 
@@ -37,19 +38,7 @@
                     </div>
                 </div>
 
-                <div class="mt-8">
-                    <p class="mb-3 text-sm font-semibold text-slate-300">Check-in terbaru</p>
-                    <div class="space-y-2">
-                        @forelse($recentVisits->take(4) as $visit)
-                            <div class="rounded-md border border-white/10 bg-white/10 px-4 py-3">
-                                <p class="font-semibold">{{ $visit->member?->name ?: $visit->guest_name }}</p>
-                                <p class="mt-1 text-sm text-slate-300">{{ $visit->identity_number ?: $visit->member?->member_id ?: '-' }} &middot; {{ $visit->check_in_at->format('H:i') }}</p>
-                            </div>
-                        @empty
-                            <div class="rounded-md border border-white/10 bg-white/10 px-4 py-3 text-sm text-slate-300">Belum ada check-in hari ini.</div>
-                        @endforelse
-                    </div>
-                </div>
+                <div class="mt-8 text-sm font-semibold text-slate-300">Daftar hadir perpustakaan sedang terbuka.</div>
             </section>
 
             <section class="flex min-h-full flex-col rounded-lg border border-sky-100 bg-white p-5 shadow-xl shadow-sky-100">
@@ -75,65 +64,45 @@
                     <button class="kiosk-tab" type="button" data-kiosk-tab="register">Registrasi Baru</button>
                 </div>
 
-                <div class="grid flex-1 content-start gap-5" data-kiosk-panel="checkin" data-qr-attendance>
-                    <div class="rounded-lg border border-slate-200 bg-slate-950 p-4 text-white">
-                        <div class="aspect-video overflow-hidden rounded-md bg-slate-900">
-                            <video class="hidden h-full w-full object-cover" playsinline muted data-qr-video></video>
-                            <div class="grid h-full place-items-center p-6 text-center" data-qr-placeholder>
-                                <div>
-                                    <p class="text-sm font-semibold text-sky-200">QR Scanner</p>
-                                    <p class="mt-2 text-sm leading-6 text-slate-300">Scan kartu anggota atau input nomor induk manual.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-3 flex flex-wrap gap-2">
-                            <button class="btn-light" type="button" data-qr-start>Mulai Scan</button>
-                            <button class="btn-dark" type="button" data-qr-stop>Berhenti</button>
-                        </div>
-                        <p class="mt-3 text-sm text-slate-300" data-qr-status>Scanner siap digunakan.</p>
-                    </div>
-
-                    <form class="grid gap-4" method="POST" action="{{ route('attendance.kiosk.store') }}">
+                <div class="grid flex-1 content-start gap-5" data-kiosk-panel="checkin">
+                    <form class="rounded-lg border border-sky-100 bg-sky-50/60 p-5" method="POST" action="{{ route('attendance.kiosk.store') }}">
                         @csrf
                         <input type="hidden" name="kiosk_mode" value="1">
-                        <input type="hidden" name="attendance_source" value="manual" data-qr-source>
+                        <input type="hidden" name="attendance_source" value="manual">
                         <input type="hidden" name="form_mode" value="checkin">
+                        <input type="hidden" name="purpose" value="Kunjungan Perpustakaan">
 
                         <label>
                             <span class="mb-1 block text-sm font-semibold text-slate-700">Nomor Induk</span>
-                            <input class="input min-h-14 text-lg" name="identity_number" data-qr-identity placeholder="NIM / NIS / NIDN / NUPTK / Nomor anggota" value="{{ old('identity_number') }}" required autofocus>
+                            <input class="input min-h-16 text-xl font-semibold" name="identity_number" placeholder="NIM / NIS / NIDN / NUPTK / Nomor anggota" value="{{ old('identity_number') }}" required autofocus autocomplete="off">
                         </label>
 
-                        <div class="grid gap-3 sm:grid-cols-2">
-                            <label>
-                                <span class="mb-1 block text-sm font-semibold text-slate-700">Nama</span>
-                                <input class="input" name="visitor_name" placeholder="Opsional" value="{{ old('visitor_name') }}">
-                            </label>
-                            <label>
-                                <span class="mb-1 block text-sm font-semibold text-slate-700">Jenis Pengunjung</span>
-                                <select class="input" name="visitor_type">
-                                    <option value="">Otomatis / Pengunjung</option>
-                                    @foreach(['Mahasiswa', 'Dosen', 'Tenaga Kependidikan', 'Siswa', 'Guru', 'Tamu'] as $type)
-                                        <option @selected(old('visitor_type') === $type)>{{ $type }}</option>
-                                    @endforeach
-                                </select>
-                            </label>
-                            <label>
-                                <span class="mb-1 block text-sm font-semibold text-slate-700">Keperluan</span>
-                                <select class="input" name="purpose" required>
-                                    @foreach(['Membaca', 'Meminjam Buku', 'Mengembalikan Buku', 'Mengerjakan Tugas', 'Akses Ebook', 'Riset', 'Diskusi'] as $purpose)
-                                        <option @selected(old('purpose', 'Membaca') === $purpose)>{{ $purpose }}</option>
-                                    @endforeach
-                                </select>
-                            </label>
-                            <label>
-                                <span class="mb-1 block text-sm font-semibold text-slate-700">Catatan</span>
-                                <input class="input" name="notes" placeholder="Opsional" value="{{ old('notes') }}">
-                            </label>
+                        <button class="btn-primary mt-4 min-h-14 w-full text-base" type="submit">Catat Kehadiran</button>
+                    </form>
+
+                    <div class="rounded-lg border border-slate-200 bg-white p-5">
+                        <div class="mb-4 flex items-end justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-semibold text-sky-700">Hadir terbaru</p>
+                                <h2 class="text-2xl font-bold">Kartu pengunjung masuk</h2>
+                            </div>
+                            <span class="rounded-md bg-slate-100 px-3 py-2 text-sm font-semibold text-slate-700">{{ $recentVisits->count() }} data</span>
                         </div>
 
-                        <button class="btn-primary min-h-14 text-base" type="submit">Catat Kehadiran</button>
-                    </form>
+                        <div class="grid gap-3">
+                            @forelse($recentVisits->take(6) as $visit)
+                                <div class="flex items-center justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+                                    <div class="min-w-0">
+                                        <p class="truncate font-semibold">{{ $visit->member?->name ?: $visit->guest_name }}</p>
+                                        <p class="mt-1 truncate text-sm text-slate-600">{{ $visit->identity_number ?: $visit->member?->member_id ?: '-' }}</p>
+                                    </div>
+                                    <span class="shrink-0 rounded-md bg-sky-100 px-3 py-2 text-sm font-bold text-sky-800">{{ $visit->check_in_at->format('H:i') }}</span>
+                                </div>
+                            @empty
+                                <div class="rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-6 text-center text-sm text-slate-600">Belum ada pengunjung yang tercatat hari ini.</div>
+                            @endforelse
+                        </div>
+                    </div>
                 </div>
 
                 <form class="hidden flex-1 content-start gap-4" method="POST" action="{{ route('attendance.kiosk.register') }}" data-kiosk-panel="register">

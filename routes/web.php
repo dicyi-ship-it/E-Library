@@ -7,6 +7,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CirculationController;
 use App\Http\Controllers\EbookController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MemberCardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PublisherController;
 use App\Http\Controllers\SettingController;
@@ -28,6 +29,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/member/card', [MemberCardController::class, 'show'])->name('member.card');
     Route::get('/member/ebooks', [EbookController::class, 'reader'])->name('ebooks.reader');
     Route::get('/member/ebooks/{ebook}/read', [EbookController::class, 'read'])->name('ebooks.read');
     Route::get('/member/ebooks/{ebook}/download', [EbookController::class, 'download'])->name('ebooks.download');

@@ -105,15 +105,19 @@ if (attendanceScanner) {
     });
 }
 
-const kioskClock = document.querySelector('[data-kiosk-clock]');
+const kioskClocks = document.querySelectorAll('[data-kiosk-clock]');
 
-if (kioskClock) {
+if (kioskClocks.length) {
     const updateClock = () => {
-        kioskClock.textContent = new Intl.DateTimeFormat('id-ID', {
+        const time = new Intl.DateTimeFormat('id-ID', {
             hour: '2-digit',
             minute: '2-digit',
             hour12: false,
         }).format(new Date()).replace('.', ':');
+
+        kioskClocks.forEach((clock) => {
+            clock.textContent = time;
+        });
     };
 
     updateClock();
