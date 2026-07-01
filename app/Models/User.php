@@ -68,6 +68,13 @@ class User extends Authenticatable
         return $this->hasMany(Visit::class, 'member_id');
     }
 
+    public function ebooks()
+    {
+        return $this->belongsToMany(Ebook::class)
+            ->withPivot(['first_accessed_at', 'last_read_at', 'last_downloaded_at', 'read_count', 'download_count'])
+            ->withTimestamps();
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';

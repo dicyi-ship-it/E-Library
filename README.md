@@ -46,14 +46,17 @@ Banyak sekolah dan kampus membutuhkan aplikasi perpustakaan yang sederhana, bisa
 - CRUD ebook.
 - Mendukung file lokal atau URL eksternal.
 - Ebook aktif tampil di landing page.
-- Member dapat membaca atau mengunduh ebook.
+- Member dapat membaca atau mengunduh ebook dari katalog publik.
+- Halaman `Ebook Saya` hanya menampilkan ebook yang pernah dibaca atau diunduh oleh member tersebut.
+- Member dapat menghapus ebook dari daftar pribadinya tanpa menghapus data ebook dari admin.
 - Statistik jumlah unduhan.
 
 ### Absensi Pengunjung Perpustakaan
 
 - Halaman kiosk khusus untuk PC perpustakaan: `/absensi-perpustakaan`.
 - Check-in dengan input nomor induk seperti NIM, NIS, NIDN, NUPTK, nomor anggota, atau nomor unik lain.
-- Dukungan scan QR berbasis browser jika perangkat dan browser mendukung `BarcodeDetector`.
+- Cocok untuk alat scan kartu/QR yang bekerja seperti keyboard dan langsung mengisi nomor induk.
+- Jam live WIB/Jakarta dan kartu hadir terbaru tampil di layar kiosk.
 - Registrasi cepat pengunjung baru langsung dari halaman kiosk.
 - Setelah registrasi, kehadiran langsung tercatat.
 - Admin tetap memiliki halaman rekap kehadiran.
@@ -72,6 +75,9 @@ Banyak sekolah dan kampus membutuhkan aplikasi perpustakaan yang sederhana, bisa
 - CRUD anggota.
 - Data anggota: nama, email, nomor anggota, nomor identitas, telepon, fakultas/unit, departemen, program studi, level, status.
 - Role admin, member, dan staff.
+- Member yang login diarahkan ke kartu anggota perpustakaan.
+- Kartu anggota memiliki QR code berisi nomor induk seperti NIM, NIS, NIDN, NUPTK, atau fallback ke nomor anggota.
+- Login dan registrasi memakai captcha penjumlahan sederhana untuk mengurangi brute force.
 
 ### White-Label / Pengaturan Aplikasi
 
@@ -98,6 +104,7 @@ Pengaturan ini digunakan di navbar, landing page, absensi, print buku, dan beber
 - Vite
 - Tailwind CSS 4
 - JavaScript vanilla untuk interaksi ringan
+- chillerlan/php-qrcode untuk QR kartu anggota
 
 ## Kebutuhan Sistem
 
@@ -207,6 +214,7 @@ Setelah login admin, buka menu `Pengaturan` untuk mengganti identitas institusi.
 6. Tambahkan ebook jika dibutuhkan.
 7. Gunakan halaman `/absensi-perpustakaan` di PC perpustakaan.
 8. Gunakan menu `Sirkulasi` untuk peminjaman dan pengembalian.
+9. Member dapat login, melihat kartu anggota, lalu membaca/unduh ebook dari katalog.
 
 ## Struktur Modul
 
@@ -218,6 +226,7 @@ app/Http/Controllers
   CirculationController.php  Peminjaman dan pengembalian
   EbookController.php        Master ebook dan reader
   HomeController.php         Landing, katalog, dashboard
+  MemberCardController.php   Kartu anggota dan QR nomor induk
   MemberController.php       Master anggota
   PublisherController.php    Indeks penerbit
   SettingController.php      Pengaturan white-label
@@ -243,6 +252,9 @@ app/Models
 | `/katalog/ebook` | Katalog ebook |
 | `/katalog/ebook/{id}` | Informasi detail ebook |
 | `/absensi-perpustakaan` | Kiosk daftar hadir |
+| `/login` | Login dan registrasi member dengan captcha |
+| `/member/card` | Kartu anggota dengan QR nomor induk |
+| `/member/ebooks` | Daftar ebook yang pernah dibaca/diunduh member |
 | `/admin/dashboard` | Dashboard admin |
 | `/admin/books` | Master buku |
 | `/admin/authors` | Indeks penulis |
@@ -274,6 +286,7 @@ Sebelum dipakai di server produksi:
 - Ubah `APP_ENV=production`.
 - Ubah `APP_DEBUG=false`.
 - Gunakan password admin yang kuat.
+- Pastikan `APP_KEY` sudah dibuat agar session captcha dan login berjalan aman.
 - Atur database produksi.
 - Jalankan `php artisan migrate --force`.
 - Jalankan `npm run build`.
@@ -286,14 +299,14 @@ Sebelum dipakai di server produksi:
 Beberapa fitur yang bisa dikembangkan berikutnya:
 
 - Import buku dari Excel/CSV.
-- Barcode/QR untuk buku dan kartu anggota.
+- Barcode/QR untuk buku.
 - Reservasi buku.
 - Laporan statistik bulanan.
 - Export data peminjaman dan kunjungan.
 - Multi-cabang perpustakaan.
 - Hak akses role yang lebih granular.
 - Integrasi SSO kampus/sekolah.
-- Template kartu anggota.
+- Template cetak kartu anggota massal.
 
 ## Kontribusi
 

@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/member/ebooks', [EbookController::class, 'reader'])->name('ebooks.reader');
     Route::get('/member/ebooks/{ebook}/read', [EbookController::class, 'read'])->name('ebooks.read');
     Route::get('/member/ebooks/{ebook}/download', [EbookController::class, 'download'])->name('ebooks.download');
+    Route::delete('/member/ebooks/{ebook}', [EbookController::class, 'removeFromReader'])->name('ebooks.reader.remove');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {

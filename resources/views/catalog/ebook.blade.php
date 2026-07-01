@@ -4,8 +4,7 @@
 
 @section('content')
     <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
-        <a class="btn-secondary" href="{{ route('landing') }}#koleksi">Kembali ke Katalog</a>
-        <a class="btn-primary" href="{{ route('attendance.kiosk') }}">Isi Daftar Hadir</a>
+        <a class="btn-secondary" href="{{ route('catalog.ebooks.index') }}">Kembali ke Katalog</a>
     </div>
 
     <section class="grid gap-8 lg:grid-cols-[340px_1fr]">
@@ -44,8 +43,8 @@
                         <a class="btn-primary" href="{{ route('ebooks.read', $ebook) }}">Baca Ebook</a>
                         <a class="btn-secondary" href="{{ route('ebooks.download', $ebook) }}">Unduh PDF</a>
                     @else
-                        <a class="btn-primary" href="{{ route('landing') }}#akses">Masuk untuk Baca</a>
-                        <a class="btn-secondary" href="{{ route('landing') }}#akses">Daftar Anggota</a>
+                        <a class="btn-primary" href="{{ route('ebooks.read', $ebook) }}">Masuk untuk Baca</a>
+                        <a class="btn-secondary" href="{{ route('ebooks.download', $ebook) }}">Masuk untuk Unduh</a>
                     @endauth
                 </div>
             </div>

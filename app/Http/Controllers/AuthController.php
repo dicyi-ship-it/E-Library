@@ -40,7 +40,7 @@ class AuthController extends Controller
 
             return auth()->user()->isAdmin()
                 ? redirect()->intended(route('admin.dashboard'))
-                : redirect()->route('member.card');
+                : redirect()->intended(route('member.card'));
         }
 
         return back()->withErrors(['email' => 'Email atau password tidak cocok, atau akun belum aktif.'])->onlyInput('email');
